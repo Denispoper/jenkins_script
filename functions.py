@@ -46,3 +46,15 @@ def changeThreshold(value):
 
 def changeMaxSamples(value):
     mc.setAttr('RadeonProRenderGlobals.completionCriteriaIterations', value)
+
+def setCamera(objCount):
+    if(mc.objExists('persp')):
+        mc.setAttr('persp.translateX', objCount + 0.5)
+        mc.setAttr('persp.rotateX', -45)
+
+        mc.setAttr('persp.translateY', objCount + 0.5)
+        mc.setAttr('persp.rotateY', 90)
+
+        mc.setAttr('persp.translateZ', 0)
+        mc.setAttr('persp.rotateZ', 0)
+
