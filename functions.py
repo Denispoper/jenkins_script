@@ -25,17 +25,25 @@ def createParser():
 
     return parser
     
-def createLight(type): 
+def createLight(type, index): 
     if(type == 'IES'): 
-        light = createIESLight()
+        light = createIESLight(index)
     elif(type == 'Physical'): 
-        light = createPhLight()
+        light = createPhLight(index)
     else: 
         print('error')
     
     if(mc.objExists(light)):
-        mc.move(0, 10, 0, light)
         mc.rotate(-90, 0, 0, light)
+        mc.move(0, 3, 0, light)
+
+    return light
+
+def createLights(type, count):
+    for index in range(count):
+        light = createLight(type, index)
+        mc.setAttr('{}.translateZ'.format(light), -3 * (index // 3))
+        mc.setAttr('{}.translateX'.format(light), 3 * (index % 3))
 
 def createIBL():
     light = mc.createNode( 'transform', n='RPRIBL' )
@@ -45,19 +53,20 @@ def createIBL():
 
     mc.setAttr('RPRIBLLight.intensity', 0.003)
 
-def createPhLight():
-    light = mc.createNode('transform', n='PhysicalLight')
-    mc.createNode('RPRPhysicalLight', n='RPRPhLightShape', p='PhysicalLight')
+def createPhLight(index):
+    light = mc.createNode('transform', n='PhysicalLight{}'.format(index))
+    mc.createNode('RPRPhysicalLight', n='RPRPhLightShape{}'.format(index), p=light)
 
     return light
 
-def createIESLight(): 
-    light = mc.createNode( 'transform', n='RPRIES' )
-    mc.createNode('RPRIES', n='RPRIESLight', p='RPRIES')
+def createIESLight(index): 
+    light = mc.createNode('transform', n='RPRIES{}'.format(index))
+    mc.createNode('RPRIES', n='RPRIESLight{}'.format(index), p=light)
 
     rootPath = 'D:\MayaMaterials'
-    filePath = rootPath + '/ies-lights-pack/star.ies'
-    mc.setAttr('RPRIESLight.iesFile', filePath, type='string')
+    filePath = rootPath + '/ies-lights-pack/pear.ies'
+    mc.setAttr('RPRIESLight{}.iesFile'.format(index), filePath, type='string')
+    mc.scale(0.03, 0.03, 0.03, light)
     
     return light
 
@@ -85,10 +94,8 @@ def createObjects(node, count):
         polyNode = mc.createNode('poly{}'.format(node), n='poly{}{}'.format(node, index))
         mc.connectAttr('{}.output'.format(polyNode), '{}.inMesh'.format(pShape), f=True)
         mc.sets('{}'.format(pShape), e=True, forceElement='initialShadingGroup')
-
-
-
-    
+        mc.setAttr('{}.translateZ'.format(transNode), -3 * (index // 3))
+        mc.setAttr('{}.translateX'.format(transNode), 3 * (index % 3))
 
 def createUberMaterials(count):
     print('')
