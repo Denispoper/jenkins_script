@@ -80,11 +80,11 @@ def setCamera(objCount):
 
 def createObjects(node, count):
     for index in range(count):
-        parNode = mc.createNode('transform', n="p{}{}".format(node, (index + 1)))
-        mc.createNode('mesh', n='p{}Shape{}'.format(node, (index + 1)), parent=parNode)
-        mc.createNode('poly{}'.format(node), n='poly{}{}'.format(node, (index + 1)))
-        mc.connectAttr('poly{}{}.output'.format(node, (index + 1)), 'p{}Shape{}.inMesh'.format(node, (index + 1)), f=True)
-        mc.sets('p{}Shape{}'.format(node, (index + 1)), e=True, forceElement='initialShadingGroup')
+        transNode = mc.createNode('transform', n="p{}{}".format(node, index))
+        pShape = mc.createNode('mesh', n='p{}Shape{}'.format(node, index), parent=transNode)
+        polyNode = mc.createNode('poly{}'.format(node), n='poly{}{}'.format(node, index))
+        mc.connectAttr('{}.output'.format(polyNode), '{}.inMesh'.format(pShape), f=True)
+        mc.sets('{}'.format(pShape), e=True, forceElement='initialShadingGroup')
 
 
 
