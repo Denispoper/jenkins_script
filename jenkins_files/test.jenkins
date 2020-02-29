@@ -13,7 +13,8 @@ pipeline {
     stages {
         stage("First step") {
             steps {
-                bat 'cd..'
+                bat 'cd/',
+                bat 'cd Autodesk/Maya/Maya2019/bin',
                 // D:\Autodesk\Maya\Maya2019\bin>mayapy D:\Workspace\test_scpirts\test.py -ot 'Cube'
             }
         }
