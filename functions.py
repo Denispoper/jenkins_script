@@ -51,7 +51,7 @@ def createIBL():
 
     mc.scale(1000, 1000, 1000, light)
 
-    mc.setAttr('RPRIBLLight.intensity', 0.003)
+    mc.setAttr('RPRIBLLight.intensity', 0.01)
 
 def createPhLight(index):
     light = mc.createNode('transform', n='PhysicalLight{}'.format(index))
@@ -87,8 +87,14 @@ def setCamera(objCount):
         mc.setAttr('persp.translateZ', 0)
         mc.setAttr('persp.rotateZ', 0)
 
-def createObjects(node, count):
-    for index in range(count):
+def setParamerts():
+    mc.setAttr('defaultRenderGlobals.imageFormat', 8)
+
+def createObjects(node, objCount, materialCount):
+    
+    createUberMaterials(materialCount)
+    
+    for index in range(objCount):
         transNode = mc.createNode('transform', n="p{}{}".format(node, index))
         pShape = mc.createNode('mesh', n='p{}Shape{}'.format(node, index), parent=transNode)
         polyNode = mc.createNode('poly{}'.format(node), n='poly{}{}'.format(node, index))
@@ -96,11 +102,16 @@ def createObjects(node, count):
         mc.sets('{}'.format(pShape), e=True, forceElement='initialShadingGroup')
         mc.setAttr('{}.translateZ'.format(transNode), -3 * (index // 3))
         mc.setAttr('{}.translateX'.format(transNode), 3 * (index % 3))
+        applyRPRUberMaterial(index % materialCount, pShape)
 
 def createUberMaterials(count):
-    print('')
+    for index in range(count):
+        shd = mc.shadingNode('RPRUberMaterial', name="RPRUberMaterial{}".format(index), asShader=True)
+        shdSG = mc.sets(name='{}SG'.format(shd), empty=True, renderable=True, noSurfaceShader=True)
+        mc.connectAttr('{}.outColor'.format(shd), '{}.surfaceShader'.format(shdSG))
 
-    #D:\Autodesk\Maya\Maya2019\bin>mayapy D:\Workspace\test_scpirts\test.py -ot 'Cube'
+def applyRPRUberMaterial(shadingGroupIndex, polyNode):
+    mc.sets(polyNode, e=True, forceElement='RPRUberMaterial{}SG'.format(shadingGroupIndex))
 
-def setParamerts():
-    mc.setAttr('defaultRenderGlobals.imageFormat', 8)
+
+#D:\Autodesk\Maya\Maya2019\bin>mayapy D:\Workspace\test_scpirts\test.py -ot 'Cube'
