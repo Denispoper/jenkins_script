@@ -4,7 +4,7 @@ properties([disableConcurrentBuilds()])
 
 pipeline {
     parameters {
-            choice(choices: ['Cube', 'Sphere', 'Cone', 'Torus'], description: '', name: 'Typeofobject')
+            choice(choices: ['Cube', 'Sphere', 'Cone', 'Torus'], description: '', name: 'Typeofobjects')
             string(defaultValue: '', description: '', name: 'Countofobjects ', trim: false)
             choice(choices: ['IES', 'Physical'], description: '', name: 'Type_of_light')
             string(defaultValue: '', description: '', name: 'Count_of_materials ', trim: false) 
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 echo "${params.Threshold}"
                 echo "${params.MaxSamples}"
-                echo "mayapy D:/Workspace/test_scpirts/test.py -ot ${params.Typeofobjects} -oc ${params.Countofobject}"
+                echo "mayapy D:/Workspace/test_scpirts/test.py -ot ${params.Typeofobjects} -oc ${params.Countofobjects}"
                 // D:\Autodesk\Maya\Maya2019\bin>mayapy D:\Workspace\test_scpirts\test.py -ot 'Cube'
             }
         }
