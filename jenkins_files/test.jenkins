@@ -23,6 +23,12 @@ pipeline {
     stages {
         stage("First step") {
             steps {
+                echo "${params.Typeofobjects}"
+                echo "${params.Countofobjects}"
+                echo "${params.Type_of_light}"
+                echo "${params.Count_of_materials}"
+                echo "${params.Count_of_light}"
+                echo "${params.Use_IBL}"
                 echo "${params.Threshold}"
                 echo "${params.MaxSamples}"
                 echo "mayapy D:/Workspace/test_scpirts/test.py -ot ${params.Typeofobjects} -oc ${params.Countofobjects}"
