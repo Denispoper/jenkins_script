@@ -29,7 +29,7 @@ pipeline {
                 bat('ipconfig')
             }
         }
-        stage("Show Parameters") {
+        /*stage("Show Parameters") {
             steps {
                 echo "${params.Type_of_objects}"
                 echo "${params.Count_of_objects}"
@@ -43,7 +43,7 @@ pipeline {
                 echo "${params}"
                 // D:\Autodesk\Maya\Maya2019\bin>mayapy D:\Workspace\test_scpirts\test.py -ot 'Cube'
             }
-        }
+        }*/
     }
 }
 
