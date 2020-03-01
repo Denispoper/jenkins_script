@@ -2,7 +2,8 @@
 
 properties([disableConcurrentBuilds()])
 
-properties([parameters([
+pipeline {
+    parameters {
             choice(choices: ['Cube', 'Sphere', 'Cone', 'Torus'], description: '', name: 'Type of object'), 
             string(defaultValue: '', description: '', name: 'Count of objects ', trim: false), 
             choice(choices: ['IES', 'Physical'], description: '', name: 'Type of light'), 
@@ -11,9 +12,7 @@ properties([parameters([
             booleanParam(defaultValue: false, description: '', name: 'Use IBL'), 
             string(defaultValue: '', description: '', name: 'Max Samples', trim: false), 
             string(defaultValue: '', description: '', name: 'Threshold', trim: false)
-])])
-
-pipeline {
+    }
     agent { 
         label 'Agent'
         }
@@ -24,7 +23,7 @@ pipeline {
     stages {
         stage("First step") {
             steps {
-                echo '${params.Threshold}'
+                echo "${params.Threshold}"
                 // D:\Autodesk\Maya\Maya2019\bin>mayapy D:\Workspace\test_scpirts\test.py -ot 'Cube'
             }
         }
