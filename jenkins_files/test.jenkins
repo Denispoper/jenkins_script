@@ -24,7 +24,7 @@ pipeline {
         stage("First step") {
             steps {
                 echo "${params.Threshold}"
-                echo "${params.Max Samples}"
+                echo "${params.MaxSamples}"
                 // D:\Autodesk\Maya\Maya2019\bin>mayapy D:\Workspace\test_scpirts\test.py -ot 'Cube'
             }
         }
