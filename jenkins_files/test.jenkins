@@ -24,8 +24,10 @@ pipeline {
     }
     stages {
         stage("Preparations"){
-            dir("D:/Autodesk/Maya/Maya2019/bin")
-            bat('ipconfig')
+            steps {
+                dir("D:/Autodesk/Maya/Maya2019/bin")
+                bat('ipconfig')
+            }
         }
         stage("Show Parameters") {
             steps {
