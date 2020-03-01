@@ -1,6 +1,17 @@
 import maya.cmds as mc
 import sys
-import argparse    
+import argparse
+import maya.mel as mel
+import maya.app as ma
+import random
+import maya.standalone as ms
+
+def hex_to_rgb(value):
+    value = value.lstrip('#')
+    lv = len(value)
+    temp = tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
+    res = [float(i)/255.0 for i in temp]
+    return res
 
 def str2bool(v):
     if isinstance(v, bool):
@@ -16,7 +27,7 @@ def createParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('-ot', '--objecttype', default='Cube', type=str)
     parser.add_argument('-oc', '--objectcount', default=1, type=int)
-    parser.add_argument('-lt', '--lighttype', default='Physical Light', type=str)
+    parser.add_argument('-lt', '--lighttype', default='Physical', type=str)
     parser.add_argument('-mc', '--materialcount', default=1, type=int)
     parser.add_argument('-lc', '--lightcount',nargs='?', const=True, default=1, type=int)
     parser.add_argument('-ibl', '--isibl', default=False, type=str2bool)
@@ -31,7 +42,7 @@ def createLight(type, index):
     elif(type == 'Physical'): 
         light = createPhLight(index)
     else: 
-        print('error')
+        raise argparse.ArgumentError('Wrong name of type')
     
     if(mc.objExists(light)):
         mc.rotate(-90, 0, 0, light)
@@ -55,7 +66,8 @@ def createIBL():
 
 def createPhLight(index):
     light = mc.createNode('transform', n='PhysicalLight{}'.format(index))
-    mc.createNode('RPRPhysicalLight', n='RPRPhLightShape{}'.format(index), p=light)
+    lShape = mc.createNode('RPRPhysicalLight', n='RPRPhLightShape{}'.format(index), p=light)
+    mc.setAttr('{}.lightIntensity'.format(lShape), 0.5)
 
     return light
 
@@ -78,13 +90,13 @@ def changeMaxSamples(value):
 
 def setCamera(objCount):
     if(mc.objExists('persp')):
-        mc.setAttr('persp.translateX', objCount + 0.5)
+        mc.setAttr('persp.translateX', 10)
         mc.setAttr('persp.rotateX', -45)
 
-        mc.setAttr('persp.translateY', objCount + 0.5)
+        mc.setAttr('persp.translateY', 10)
         mc.setAttr('persp.rotateY', 90)
 
-        mc.setAttr('persp.translateZ', 0)
+        mc.setAttr('persp.translateZ', -5)
         mc.setAttr('persp.rotateZ', 0)
 
 def setParamerts():
@@ -109,9 +121,36 @@ def createUberMaterials(count):
         shd = mc.shadingNode('RPRUberMaterial', name="RPRUberMaterial{}".format(index), asShader=True)
         shdSG = mc.sets(name='{}SG'.format(shd), empty=True, renderable=True, noSurfaceShader=True)
         mc.connectAttr('{}.outColor'.format(shd), '{}.surfaceShader'.format(shdSG))
+        color = "%06x" % random.randint(0, 0xFFFFFF)
+        color = hex_to_rgb(color)
+        mc.setAttr('{}.diffuseColor'.format(shd), color[0], color[1], color[2], type='double3')
 
 def applyRPRUberMaterial(shadingGroupIndex, polyNode):
     mc.sets(polyNode, e=True, forceElement='RPRUberMaterial{}SG'.format(shadingGroupIndex))
 
+
+def makeImage():
+    mc.setAttr('defaultRenderGlobals.imageFormat', 8)
+    
+
+ms.initialize("Python")
+
+mc.loadPlugin("Mayatomr") # Load all plugins you might need
+mc.loadPlugin("RadeonProRender")
+
+if __name__ == "__main__":
+    parser = createParser()
+    ns = parser.parse_args(sys.argv[1:])
+
+    print(ns)
+
+    createObjects(ns.objecttype, ns.objectcount, ns.materialcount)
+    createLights(ns.lighttype, ns.lightcount)
+    if(ns.isibl):
+        createIBL()
+    changeMaxSamples(ns.maxsamples)
+    changeThreshold(ns.threshold)
+
+    makeImage()
 
 #D:\Autodesk\Maya\Maya2019\bin>mayapy D:\Workspace\test_scpirts\test.py -ot 'Cube'
