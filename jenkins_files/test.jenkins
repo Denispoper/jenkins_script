@@ -46,7 +46,7 @@ pipeline {
         }
         stage('Checking'){
             steps {
-                bat "mayapy D:/Workspace/test_scpirts/functions.py -ot Cube -oc 3 -lt Physical -mc 2 -lc 4 -ibl true -ms 400 -th 0.001"
+                bat "mayapy D:/Workspace/test_scpirts/functions.py"
             }
         }
         /*stage('Preparations') {
