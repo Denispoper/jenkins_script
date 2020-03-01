@@ -2,6 +2,8 @@
 
 properties([disableConcurrentBuilds()])
 
+def ot = 'Type of object'
+
 pipeline {
     parameters {
             choice(choices: ['Cube', 'Sphere', 'Cone', 'Torus'], description: '', name: 'Type of objects')
@@ -23,7 +25,7 @@ pipeline {
     stages {
         stage("First step") {
             steps {
-                /*echo "${params.Typeofobjects}"
+                echo "${params.ot}"
                 echo "${params.Countofobjects}"
                 echo "${params.Type_of_light}"
                 echo "${params.Count_of_materials}"
