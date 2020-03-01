@@ -44,13 +44,18 @@ pipeline {
                 //mayapy D:\Workspace\test_scpirts\test.py -ot Cube -oc 3 -lt Physical -mc 2 -lc 4 -ibl true -ms 400 -th 0.001
             }
         }
-        
-        stage('Preparations') {
+        stage('Checking'){
+            steps {
+                bat 'mayapy D:\Workspace\test_scpirts\test.py -ot Cube -oc 3 -lt Physical -mc 2 -lc 4 -ibl true -ms 400 -th 0.001'
+            }
+        }
+        /*stage('Preparations') {
             steps {
                 bat "mayapy D:/Workspace/test_scpirts/test.py -ot ${params.Type_of_objects} -oc ${params.Count_of_objects} -lt ${params.Type_of_light} -mc ${params.Count_of_materials} -lc ${params.Count_of_light} -ibl ${params.Use_IBL} -ms ${params.Max_Samples} -th ${params.Threshold}"
                 bat 'ipconfig'
             }
         }
+        */
     }
 }
 
