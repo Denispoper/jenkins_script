@@ -26,6 +26,7 @@ pipeline {
         stage("First step") {
             steps {
                 echo "${params.ot}"
+                /*
                 echo "${params.Countofobjects}"
                 echo "${params.Type_of_light}"
                 echo "${params.Count_of_materials}"
