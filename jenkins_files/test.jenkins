@@ -4,13 +4,13 @@ properties([disableConcurrentBuilds()])
 
 pipeline {
     parameters {
-            choice(choices: ['Cube', 'Sphere', 'Cone', 'Torus'], description: '', name: 'Type of object'), 
-            string(defaultValue: '', description: '', name: 'Count of objects ', trim: false), 
-            choice(choices: ['IES', 'Physical'], description: '', name: 'Type of light'), 
-            string(defaultValue: '', description: '', name: 'Count of materials ', trim: false), 
-            string(defaultValue: '', description: '', name: 'Count of light', trim: false), 
-            booleanParam(defaultValue: false, description: '', name: 'Use IBL'), 
-            string(defaultValue: '', description: '', name: 'Max Samples', trim: false), 
+            choice(choices: ['Cube', 'Sphere', 'Cone', 'Torus'], description: '', name: 'Type of object')
+            string(defaultValue: '', description: '', name: 'Count of objects ', trim: false)
+            choice(choices: ['IES', 'Physical'], description: '', name: 'Type of light')
+            string(defaultValue: '', description: '', name: 'Count of materials ', trim: false) 
+            string(defaultValue: '', description: '', name: 'Count of light', trim: false) 
+            booleanParam(defaultValue: false, description: '', name: 'Use IBL')
+            string(defaultValue: '', description: '', name: 'Max Samples', trim: false) 
             string(defaultValue: '', description: '', name: 'Threshold', trim: false)
     }
     agent { 
