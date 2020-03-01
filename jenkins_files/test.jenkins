@@ -6,13 +6,13 @@ def ot = 'Type of object'
 
 pipeline {
     parameters {
-            choice(choices: ['Cube', 'Sphere', 'Cone', 'Torus'], description: '', name: 'Type of objects')
-            string(defaultValue: '', description: '', name: 'Count of objects', trim: false)
-            choice(choices: ['IES', 'Physical'], description: '', name: 'Type of light')
-            string(defaultValue: '', description: '', name: 'Count of materials', trim: false) 
-            string(defaultValue: '', description: '', name: 'Count of light', trim: false) 
-            booleanParam(defaultValue: false, description: '', name: 'Use IBL')
-            string(defaultValue: '', description: '', name: 'Max Samples', trim: false) 
+            choice(choices: ['Cube', 'Sphere', 'Cone', 'Torus'], description: '', name: 'Type_of_objects')
+            string(defaultValue: '', description: '', name: 'Count_of_objects', trim: false)
+            choice(choices: ['IES', 'Physical'], description: '', name: 'Type_of_light')
+            string(defaultValue: '', description: '', name: 'Count_of_materials', trim: false) 
+            string(defaultValue: '', description: '', name: 'Count_of_light', trim: false) 
+            booleanParam(defaultValue: false, description: '', name: 'Use_IBL')
+            string(defaultValue: '', description: '', name: 'Max_Samples', trim: false) 
             string(defaultValue: '', description: '', name: 'Threshold', trim: false)
     }
     agent { 
@@ -23,19 +23,17 @@ pipeline {
         timestamps()
     }
     stages {
-        stage("First step") {
+        stage("Parameters") {
             steps {
-                echo "${params.$ot}"
-                /*
-                echo "${params.Countofobjects}"
+                echo "${params.Type_of_objects}"
+                echo "${params.Count_of_objects}"
                 echo "${params.Type_of_light}"
                 echo "${params.Count_of_materials}"
                 echo "${params.Count_of_light}"
                 echo "${params.Use_IBL}"
                 echo "${params.Threshold}"
-                echo "${params.MaxSamples}"
-                */
-                echo "mayapy D:/Workspace/test_scpirts/test.py -ot ${params.Typeofobjects} -oc ${params.Countofobjects}"
+                echo "${params.Max_Samples}"
+                echo "mayapy D:/Workspace/test_scpirts/test.py -ot ${params.Type_of_objects} -oc ${params.Count_of_objects}"
                 echo "${params}"
                 // D:\Autodesk\Maya\Maya2019\bin>mayapy D:\Workspace\test_scpirts\test.py -ot 'Cube'
             }
