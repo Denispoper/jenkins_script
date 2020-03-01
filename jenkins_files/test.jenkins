@@ -23,11 +23,11 @@ pipeline {
         timestamps()
     }
     stages {
-        stage('Show Render Info'){
+        /*stage('Show Render Info'){
             steps{
                 bat 'Render -r FireRender -help'
             }
-        }
+        }*/
         stage('Show Parameters') {
             steps {
                 echo "${params.Type_of_objects}"
@@ -44,12 +44,9 @@ pipeline {
                 //mayapy D:\Workspace\test_scpirts\test.py -ot Cube -oc 3 -lt Physical -mc 2 -lc 4 -ibl true -ms 400 -th 0.001
             }
         }
-        /*
+        
         stage('Preparations') {
             steps {
-                dir('D:/Autodesk/Maya/Maya2019/bin'){
-
-                }
                 bat "mayapy D:/Workspace/test_scpirts/test.py -ot ${params.Type_of_objects}
                                                               -oc ${params.Count_of_objects} 
                                                               -lt ${params.Type_of_light} 
@@ -62,7 +59,6 @@ pipeline {
             }
             
         }
-        */
     }
 }
 
