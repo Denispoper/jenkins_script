@@ -44,9 +44,9 @@ pipeline {
                 //mayapy D:\Workspace\test_scpirts\test.py -ot Cube -oc 3 -lt Physical -mc 2 -lc 4 -ibl true -ms 400 -th 0.001
             }
         }
-        stage('Checking'){
+        stage('Render'){
             steps {
-                bat "mayapy D:/Workspace/test_scpirts/functions.py"
+                bat "render -r FireRender -proj mayaimages -rd C:/Users/Denispoper/Desktop/mayaimages -of jpeg -im fulltest -x 1920 -y 1080 C:/Users/Denispoper/Desktop/mayaimages/test.mb"
             }
         }
         /*stage('Preparations') {
