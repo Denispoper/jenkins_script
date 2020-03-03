@@ -5,6 +5,7 @@ import maya.mel as mel
 import maya.app as ma
 import random
 import maya.standalone as ms
+import os
 
 def hex_to_rgb(value):
     value = value.lstrip('#')
@@ -132,25 +133,11 @@ def applyRPRUberMaterial(shadingGroupIndex, polyNode):
 def makeImage():
     mc.setAttr('defaultRenderGlobals.imageFormat', 8)
     
+def createMetadata(params):
+    path = 'C:/Users/Denispoper/Desktop/testResults'
+    f = open(os.path.join(path, 'metadata.txt'), 'w+')
+    temp = vars(params)
 
-ms.initialize("Python")
-
-mc.loadPlugin("Mayatomr") # Load all plugins you might need
-mc.loadPlugin("RadeonProRender")
-
-if __name__ == "__main__":
-    parser = createParser()
-    ns = parser.parse_args(sys.argv[1:])
-
-    print(ns)
-
-    createObjects(ns.objecttype, ns.objectcount, ns.materialcount)
-    createLights(ns.lighttype, ns.lightcount)
-    if(ns.isibl):
-        createIBL()
-    changeMaxSamples(ns.maxsamples)
-    changeThreshold(ns.threshold)
-
-    makeImage()
-
-#D:\Autodesk\Maya\Maya2019\bin>mayapy D:\Workspace\test_scpirts\test.py -ot 'Cube'
+    for key, item in temp.items():
+        f.write('{}: {}\n'.format(key,item))
+    f.close()
