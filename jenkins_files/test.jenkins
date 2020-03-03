@@ -23,40 +23,28 @@ pipeline {
         timestamps()
     }
     stages {
-        /*stage('Show Render Info'){
+        stage('Show Render Info'){
             steps{
                 bat 'Render -r FireRender -help'
             }
-        }*/
+        }
         stage('Show Parameters') {
             steps {
-                echo "${params.Type_of_objects}"
-                echo "${params.Count_of_objects}"
-                echo "${params.Type_of_light}"
-                echo "${params.Count_of_materials}"
-                echo "${params.Count_of_light}"
-                echo "${params.Use_IBL}"
-                echo "${params.Threshold}"
-                echo "${params.Max_Samples}"
-                echo "mayapy D:/Workspace/test_scpirts/test.py -ot ${params.Type_of_objects} -oc ${params.Count_of_objects}"
                 echo "${params}"
-                // D:\Autodesk\Maya\Maya2019\bin>mayapy D:\Workspace\test_scpirts\test.py -ot 'Cube'
-                //mayapy D:\Workspace\test_scpirts\test.py -ot Cube -oc 3 -lt Physical -mc 2 -lc 4 -ibl true -ms 400 -th 0.001
             }
         }
-        stage('Render'){
-            steps {
-                bat "render -r FireRender -proj mayaimages -rd C:/Users/Denispoper/Desktop/mayaimages -of jpeg -im fulltest -x 1920 -y 1080 C:/Users/Denispoper/Desktop/mayaimages/test.mb"
-            }
-        }
-        /*stage('Preparations') {
+        /*stage('Craete Scene') {
             steps {
                 bat "mayapy D:/Workspace/test_scpirts/test.py -ot ${params.Type_of_objects} -oc ${params.Count_of_objects} -lt ${params.Type_of_light} -mc ${params.Count_of_materials} -lc ${params.Count_of_light} -ibl ${params.Use_IBL} -ms ${params.Max_Samples} -th ${params.Threshold}"
                 bat 'ipconfig'
             }
         }
-        */
-
+        
+        stage('Render Scene'){
+            steps {
+                bat "render -r FireRender -proj mayaimages -rd C:/Users/Denispoper/Desktop/mayaimages -of jpeg -im fulltest -x 1920 -y 1080 C:/Users/Denispoper/Desktop/mayaimages/test.mb"
+            }
+        }\*/
     }
     post {
         always {
